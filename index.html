@@ -129,7 +129,8 @@
         body.light-mode .info-label,
         body.light-mode .footer,
         body.light-mode .project-subtitle {
-            color: #475569;
+            /* color: #475569; */
+            color: black;
         }
 
         /* Light mode code syntax colors - higher contrast */
@@ -495,7 +496,8 @@
 
         .footer {
             text-align: center;
-            color: #64748b;
+            /* color: #64748b; */
+            color: black;
             font-size: 12px;
             padding: 20px;
         }
@@ -895,12 +897,13 @@ body.light-mode .describe {
         </div> -->
 
         <!-- Footer -->
-        <div class="footer">
-            © 2016 Ernest Khor. All rights reserved.
+        <div class="footer" >
+               © 2016 Ernest Khor. All rights reserved.
+
         </div>
     </div>
 
-    <script>
+    <script>    
         // Check for saved theme preference or default to dark mode
         const currentTheme = localStorage.getItem('theme') || 'dark';
         if (currentTheme === 'light') {

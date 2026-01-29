@@ -297,6 +297,8 @@
             /* Ensures proper rendering */
             position: relative;
             box-sizing: border-box;
+
+                transition: transform 0.3s ease;
         }
 
         .avatar-image {
@@ -317,6 +319,19 @@
             /* image-rendering: -webkit-optimize-contrast;
             image-rendering: crisp-edges; */
         }
+
+
+
+
+.avatar:hover {
+    transform: scale(2); /* 20% bigger */
+}
+
+
+
+
+
+
 
         .profile-info h1 {
             color: #e0e0e0;
@@ -698,16 +713,11 @@ body.light-mode .describe {
         <div class="profile-section">
             <div class="profile-header">
                 <div class="avatar">
-
-
               <img
                 src="./ava-ice-mountain-cartoon.jpg"
                 alt="Ernest Khor Avatar"
                 class="avatar-image"
               />
-
-
-
                 </div>
                 <div class="profile-info">
                     <h1>Ernest Khor's Business Card</h1>

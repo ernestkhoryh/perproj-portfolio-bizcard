@@ -88,6 +88,7 @@
         body.light-mode .project-card,
         body.light-mode .testimonial {
             background: #f8fafc;
+            /* background: grey; */
             border-color: #e2e8f0;
         }
 
@@ -572,6 +573,30 @@
     box-shadow: 0 0 0 1px #ef4444 !important;
 }
 
+.describe {
+    font-size: 14px;
+    line-height: 1.7;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+/* Dark mode */
+.describe {
+    color: #e0e0e0;
+    background: rgba(30, 41, 59, 0.9);
+    border: 1px solid #334155;
+
+}
+
+/* Light mode */
+body.light-mode .describe {
+    color: #1e293b;
+    background: rgba(241, 245, 249, 0.9);
+    /* border: 1px solid #cbd5e1; */
+    border-color: #e2e8f0;
+}
+
     </style>
 </head>
 <body>
@@ -638,9 +663,9 @@
         <!-- About Section -->
         <div class="section">
             <div class="section-title">About</div>
-            <p style="color: #94a3b8; font-size: 14px; line-height: 1.7;">
-                Passionate full-stack developer with 5+ years of experience creating scalable web applications and solving complex technical challenges. Specialized in modern JavaScript frameworks and cloud technologies.
-            </p>
+<p class="describe">
+    Passionate full-stack developer with 5+ years of experience creating scalable web applications and solving complex technical challenges. Specialized in modern JavaScript frameworks and cloud technologies.
+</p>
             <div class="skills-container">
                 <span class="skill-tag">JavaScript</span>
                 <span class="skill-tag">TypeScript</span>
@@ -823,7 +848,7 @@
         <!-- Quick Actions -->
         <div class="section">
             <div class="section-title">Let's Work Together</div>
-            <p style="color: #94a3b8; font-size: 13px; margin-bottom: 15px;">
+            <p class="describe">
                 Have a project in mind? Let's discuss how I can help you build something amazing. Whether it's a new application, system architecture, or code review, I'm here to help.
             </p>
 

@@ -54,6 +54,7 @@
         .theme-toggle {
             cursor: pointer;
             font-size: 20px;
+            font-weight: bold;
             padding: 8px 12px;
             background: #1e293b;
             border: 2px solid #334155;
@@ -68,6 +69,16 @@
             background: #334155;
             transform: scale(1.05);
         }
+
+        .para-sendemail {
+            /* color: #64748b;  */
+            color: white;
+            font-size: 12px; 
+            font-weight: bold; 
+            text-align: center; 
+            margin-top: 15px;
+        }
+
 
         /* Light mode styles */
         body.light-mode {
@@ -207,6 +218,16 @@
             color: #94a3b8;
         }
 
+        body.light-mode .para-sendemail {
+            /* color: #64748b;  */
+            color: black;
+            font-size: 12px; 
+            font-weight: bold; 
+            text-align: center; 
+            margin-top: 15px;
+        }
+
+        
         .profile-section {
             background: #0f172a;
             border: 2px solid #1e293b;
@@ -266,18 +287,21 @@
             color: #e0e0e0;
             font-size: 28px;
             margin-bottom: 5px;
+            font-weight: bold;
         }
 
         .profile-info .title {
             color: #22c55e;
             font-size: 16px;
             margin-bottom: 15px;
+            font-weight: bold;
         }
 
         .tagline {
             color: #94a3b8;
             font-size: 14px;
             line-height: 1.6;
+            font-weight: bold;
         }
 
         .code-block {
@@ -287,6 +311,7 @@
             padding: 20px;
             margin: 20px 0;
             font-size: 13px;
+            font-weight: bold;
         }
 
         .code-line {
@@ -328,6 +353,7 @@
         .section-title {
             color: #3b82f6;
             font-size: 18px;
+            font-weight: bold;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
@@ -355,11 +381,13 @@
         .info-label {
             color: #64748b;
             font-size: 13px;
+            font-weight: bold;
         }
 
         .info-value {
             color: #3b82f6;
             font-size: 13px;
+            font-weight: bold;
         }
 
         .availability-grid {
@@ -383,6 +411,7 @@
         .time {
             color: #3b82f6;
             font-size: 12px;
+            font-weight: bold;
         }
 
         .skills-container {
@@ -399,6 +428,7 @@
             border-radius: 6px;
             border: 1px solid #334155;
             font-size: 13px;
+            font-weight: bold;
         }
 
         .portfolio-grid {
@@ -417,6 +447,7 @@
             justify-content: center;
             color: #64748b;
             font-size: 12px;
+            font-weight: bold;
             border: 1px solid #334155;
         }
 
@@ -436,12 +467,14 @@
         .testimonial-text {
             color: #94a3b8;
             font-size: 13px;
+            font-weight: bold;
             margin-bottom: 8px;
         }
 
         .testimonial-author {
             color: #3b82f6;
             font-size: 12px;
+            font-weight: bold;
         }
 
         .btn {
@@ -499,6 +532,7 @@
             /* color: #64748b; */
             color: black;
             font-size: 12px;
+            font-weight: bold;
             padding: 20px;
         }
 
@@ -526,22 +560,26 @@
             align-items: center;
             justify-content: center;
             font-size: 24px;
+            font-weight: bold;
         }
 
         .project-title {
             color: #3b82f6;
             font-size: 16px;
+            font-weight: bold;
             margin-bottom: 5px;
         }
 
         .project-subtitle {
             color: #64748b;
             font-size: 12px;
+            font-weight: bold;
         }
 
         .project-description {
             color: #94a3b8;
             font-size: 13px;
+            font-weight: bold;
             line-height: 1.6;
             margin-bottom: 15px;
         }
@@ -558,6 +596,7 @@
             padding: 4px 10px;
             border-radius: 4px;
             font-size: 11px;
+            font-weight: bold;
             border: 1px solid #334155;
         }
 
@@ -577,6 +616,7 @@
 
 .describe {
     font-size: 14px;
+    font-weight: bold;
     line-height: 1.7;
     padding: 15px;
     border-radius: 8px;
@@ -605,7 +645,7 @@ body.light-mode .describe {
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <div style="color: #3b82f6;">~ developer/Ernest Khor</div>
+            <div style="color: #3b82f6; font-weight: bold;">~ developer/Ernest Khor</div>
             <div style="display: flex; align-items: center; gap: 15px;">
                 <div class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
                     🌙
@@ -860,8 +900,8 @@ body.light-mode .describe {
             <!-- <input type="text" class="input-field" placeholder="Preferred Date"> -->
 
 <button class="btn btn-primary" onclick="sendToWhatsApp()">Get in touch →</button>
-            <p style="color: #64748b; font-size: 12px; text-align: center; margin-top: 15px;">
-                or send an email to <span style="color: #3b82f6;">ernestkhor@gmail.com</span>
+            <p class="para-sendemail">
+                or send an email to <span style="color: #3b82f6; font-weight: bold;">ernestkhor@gmail.com</span>
             </p>
             <!-- <button class="btn btn-primary">→ Schedule Meeting</button> -->
         </div>

@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ernest Khor - Full-Stack Developer</title>
+    <!-- Fira Code Font from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            --bg-gradient-light: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-bg-light: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-border-light: rgba(0, 0, 0, 0.1);
+            --text-primary: #e0e0e0;
+            --text-secondary: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-green: #22c55e;
+            --accent-purple: #c792ea;
+            --accent-yellow: #eab308;
+            --error-red: #ef4444;
+            --card-hover-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fira Code', monospace;
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Grid Pattern Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Light mode grid */
+        body.light-mode {
+            background: var(--bg-gradient-light);
+            color: #1e293b;
+        }
+
+        body.light-mode::before {
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+        }
+
+        /* ===== SCROLL PROGRESS BAR ===== */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+            z-index: 9999;
+            transition: width 0.1s ease-out;
+        }
+
+        /* ===== STICKY HEADER ===== */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 16px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px;
+            transition: var(--transition-smooth);
+        }
+
+        body.light-mode .header {
+            background: var(--glass-bg-light);
+            border-color: var(--glass-border-light);
+        }
+
+        .header:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        body.light-mode .header:hover {
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        /* ===== TERMINAL BUTTONS WITH PULSE ===== */
+        .terminal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-circle {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+
+        .btn-circle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            opacity: 0;
+            animation: pulse 2s infinite;
+        }
+
+        .btn-red { 
+            background: #ef4444; 
+        }
+        .btn-red::after {
+            background: #ef4444;
+        }
+
+        .btn-yellow { 
+            background: #eab308; 
+        }
+        .btn-yellow::after {
+            background: #eab308;
+        }
+
+        .btn-green { 
+            background: #22c55e; 
+        }
+        .btn-green::after {
+            background: #22c55e;
+        }
+
+        .btn-circle:hover {
+            transform: scale(1.2);
+        }
+
+        .btn-circle:hover::after {
+            opacity: 0.4;
+        }
+
+        @keyframes pulse {
+            0% {
+                width: 100%;
+                height: 100%;
+                opacity: 0.4;
+            }
+            100% {
+                width: 200%;
+                height: 200%;
+                opacity: 0;
+            }
+        }
+
+        /* ===== THEME TOGGLE ===== */
+        .theme-toggle {
+            cursor: pointer;
+            font-size: 22px;
+            font-weight: bold;
+            padding: 10px 14px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body.light-mode .theme-toggle {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== GLASSMORPHISM CARDS ===== */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+            transition: var(--transition-smooth);
+        }
+
+        body.light-mode .glass-card {
+            background: var(--glass-bg-light);
+            border-color: var(--glass-border-light);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--card-hover-shadow);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .profile-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 24px;
+            transition: var(--transition-smooth);
+        }
+
+        body.light-mode .profile-section {
+            background: var(--glass-bg-light);
+            border-color: var(--glass-border-light);
+        }
+
+        .profile-section:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--card-hover-shadow);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+            transition: var(--transition-smooth);
+        }
+
+        body.light-mode .section {
+            background: var(--glass-bg-light);
+            border-color: var(--glass-border-light);
+        }
+
+        .section:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--card-hover-shadow);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        /* ===== REVEAL ANIMATIONS ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* ===== PROFILE HEADER ===== */
+        .profile-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .avatar {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: 3px solid var(--accent-blue);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-sizing: border-box;
+            transition: var(--transition-smooth);
+            flex-shrink: 0;
+        }
+
+        .avatar:hover {
+            transform: scale(1.1) rotate(3deg);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+        }
+
+        .avatar-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+
+        .profile-info h1 {
+            color: var(--text-primary);
+            font-size: 28px;
+            margin-bottom: 6px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--text-primary), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        body.light-mode .profile-info h1 {
+            background: linear-gradient(90deg, #1e293b, var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-info .title {
+            color: var(--accent-green);
+            font-size: 16px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .tagline {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        /* ===== CODE BLOCKS WITH LINE NUMBERS ===== */
+        .code-block {
+            background: rgba(10, 14, 39, 0.8);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 13px;
+            font-weight: 500;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        body.light-mode .code-block {
+            background: rgba(241, 245, 249, 0.9);
+            border-color: rgba(203, 213, 225, 0.5);
+        }
+
+        .code-block-with-lines {
+            display: flex;
+        }
+
+        .line-numbers {
+            display: flex;
+            flex-direction: column;
+            padding-right: 16px;
+            margin-right: 16px;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            user-select: none;
+        }
+
+        body.light-mode .line-numbers {
+            border-right-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .line-number {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 12px;
+            line-height: 1.6;
+            text-align: right;
+            min-width: 24px;
+        }
+
+        body.light-mode .line-number {
+            color: rgba(0, 0, 0, 0.3);
+        }
+
+        .code-content {
+            flex: 1;
+            overflow-x: auto;
+        }
+
+        .code-line {
+            margin: 6px 0;
+            line-height: 1.6;
+        }
+
+        .keyword { color: var(--accent-purple); }
+        .function { color: var(--accent-blue); }
+        .string { color: var(--accent-green); }
+        .property { color: #f07178; }
+        .value { color: #f78c6c; }
+        .comment { color: #546e7a; }
+
+        /* ===== SECTION TITLES ===== */
+        .section-title {
+            color: var(--accent-blue);
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title::before {
+            content: '>';
+            color: var(--accent-green);
+            font-weight: bold;
+        }
+
+        /* ===== INFO GRID ===== */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-label {
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .info-value {
+            color: var(--accent-blue);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* ===== SKILL TAGS WITH HOVER ===== */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .skill-tag {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--accent-green);
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: default;
+            transition: var(--transition-smooth);
+        }
+
+        .skill-tag:hover {
+            transform: translateY(-3px) scale(1.05);
+            background: rgba(34, 197, 94, 0.25);
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+            border-color: var(--accent-green);
+        }
+
+        /* ===== PROJECT CARDS ===== */
+        .project-card {
+            background: rgba(10, 14, 39, 0.6);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 16px 0;
+            transition: var(--transition-smooth);
+        }
+
+        body.light-mode .project-card {
+            background: rgba(241, 245, 249, 0.8);
+            border-color: rgba(203, 213, 225, 0.5);
+        }
+
+        .project-card:hover {
+            transform: translateX(8px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+        }
+
+        .project-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .project-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(99, 102, 241, 0.2));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            font-weight: bold;
+            transition: var(--transition-smooth);
+        }
+
+        .project-card:hover .project-icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        .project-title {
+            color: var(--accent-blue);
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .project-subtitle {
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .project-tag {
+            background: rgba(34, 197, 94, 0.12);
+            color: var(--accent-green);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            border: 1px solid rgba(34, 197, 94, 0.25);
+            transition: var(--transition-smooth);
+        }
+
+        .project-tag:hover {
+            background: rgba(34, 197, 94, 0.2);
+            transform: scale(1.05);
+        }
+
+        /* ===== BUTTONS WITH HOVER EFFECTS ===== */
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: 2px solid;
+            background: transparent;
+            cursor: pointer;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+            margin: 12px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-green);
+            color: #0a0e27;
+            box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-blue);
+            color: #ffffff;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* ===== INPUT FIELDS ===== */
+        .input-field {
+            width: 100%;
+            padding: 14px;
+            background: rgba(10, 14, 39, 0.6);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            margin: 12px 0;
+            transition: var(--transition-smooth);
+        }
+
+        body.light-mode .input-field {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(203, 213, 225, 0.5);
+            color: #1e293b;
+        }
+
+        .input-field::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .input-field.error {
+            border-color: var(--error-red) !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
+        }
+
+        .error-message {
+            color: var(--error-red);
+            font-size: 12px;
+            margin-top: 4px;
+            margin-bottom: 8px;
+            font-family: 'Fira Code', monospace;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* ===== DESCRIBE TEXT ===== */
+        .describe {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.8;
+            padding: 16px;
+            border-radius: 10px;
+            margin: 12px 0;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        body.light-mode .describe {
+            color: #334155;
+            background: rgba(241, 245, 249, 0.8);
+            border-color: rgba(203, 213, 225, 0.5);
+        }
+
+        /* ===== PARAGRAPH SENDEMAIL ===== */
+        .para-sendemail {
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        /* ===== ICON CONTAINERS ===== */
+        .wmp-icon-container,
+        .sysarch-icon-container,
+        .consult-icon-container {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition-smooth);
+        }
+
+        .wmp-icon-container:hover,
+        .sysarch-icon-container:hover,
+        .consult-icon-container:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 24px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            margin-top: 24px;
+        }
+
+        body.light-mode .footer {
+            background: var(--glass-bg-light);
+            border-color: var(--glass-border-light);
+            color: #475569;
+        }
+
+        /* ===== TOAST NOTIFICATIONS ===== */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .toast {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 16px 24px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 280px;
+        }
+
+        body.light-mode .toast {
+            background: var(--glass-bg-light);
+            border-color: var(--glass-border-light);
+            color: #1e293b;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--accent-green);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--error-red);
+        }
+
+        .toast.info {
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        .toast-icon {
+            font-size: 20px;
+        }
+
+        /* ===== LIGHT MODE SPECIFIC OVERRIDES ===== */
+        body.light-mode .profile-info h1,
+        body.light-mode .day {
+            color: #1e293b;
+        }
+
+        body.light-mode .tagline,
+        body.light-mode .testimonial-text,
+        body.light-mode .project-description {
+            color: #475569;
+        }
+
+        body.light-mode .info-label,
+        body.light-mode .footer,
+        body.light-mode .project-subtitle {
+            color: #475569;
+        }
+
+        body.light-mode .section-title {
+            color: #2563eb;
+        }
+
+        body.light-mode .info-value,
+        body.light-mode .time,
+        body.light-mode .testimonial-author,
+        body.light-mode .project-title {
+            color: #2563eb;
+        }
+
+        body.light-mode .profile-info .title,
+        body.light-mode .skill-tag,
+        body.light-mode .project-tag {
+            color: #059669;
+        }
+
+        body.light-mode .keyword {
+            color: #7c3aed;
+        }
+
+        body.light-mode .function {
+            color: #2563eb;
+        }
+
+        body.light-mode .string {
+            color: #059669;
+        }
+
+        body.light-mode .property {
+            color: #dc2626;
+        }
+
+        body.light-mode .value {
+            color: #ea580c;
+        }
+
+        body.light-mode .comment {
+            color: #64748b;
+        }
+
+        body.light-mode .btn-primary {
+            border-color: #059669;
+            color: #059669;
+        }
+
+        body.light-mode .btn-primary:hover {
+            background: #059669;
+            color: #ffffff;
+        }
+
+        body.light-mode .btn-secondary {
+            border-color: #2563eb;
+            color: #2563eb;
+        }
+
+        body.light-mode .btn-secondary:hover {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        body.light-mode .input-field::placeholder {
+            color: #94a3b8;
+        }
+
+        body.light-mode .para-sendemail {
+            color: #475569;
+        }
+
+        body.light-mode .availability-item {
+            background: rgba(241, 245, 249, 0.8);
+            border-color: rgba(203, 213, 225, 0.5);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+            .header {
+                margin: 12px;
+                padding: 12px 16px;
+            }
+
+            .container {
+                padding: 12px;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .skills-container {
+                justify-content: center;
+            }
+
+            .project-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header reveal">
+            <div style="color: var(--accent-blue); font-weight: bold; font-size: 16px;">~ developer/Ernest Khor</div>
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <div class="theme-toggle" onclick="toggleTheme()" id="themeToggle">🌙</div>
+                <div class="terminal-buttons">
+                    <div class="btn-circle btn-red"></div>
+                    <div class="btn-circle btn-yellow"></div>
+                    <div class="btn-circle btn-green"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="profile-section reveal reveal-delay-1">
+            <div class="profile-header">
+                <div class="avatar">
+                    <img src="./ava-ice-mountain-cartoon.jpg" alt="Ernest Khor Avatar" class="avatar-image">
+                </div>
+                <div class="profile-info">
+                    <h1>Ernest Khor's Business Card</h1>
+                    <div class="title">Full-Stack Developer</div>
+                    <div class="tagline">
+                        <span class="keyword">const</span> mission = <span class="string">"Building elegant solutions with expertise and passion"</span>;
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <div class="code-block-with-lines">
+                    <div class="line-numbers">
+                        <div class="line-number">1</div>
+                        <div class="line-number">2</div>
+                        <div class="line-number">3</div>
+                        <div class="line-number">4</div>
+                        <div class="line-number">5</div>
+                        <div class="line-number">6</div>
+                    </div>
+                    <div class="code-content">
+                        <div class="code-line"><span class="keyword">await</span> <span class="function">connect</span>({</div>
+                        <div class="code-line" style="padding-left: 20px;"><span class="property">email:</span> <span class="string">"ernestkhor@gmail.com"</span>,</div>
+                        <div class="code-line" style="padding-left: 20px;"><span class="property">phone:</span> <span class="string">"+65-9234-6928"</span>,</div>
+                        <div class="code-line" style="padding-left: 20px;"><span class="property">website:</span> <span class="string"><a href="https://perproj-portfolio-nextjs-9mpw.vercel.app/" style="color: #c3e88d;" target="_blank">https://perproj-portfolio-nextjs-9mpw.vercel.app/</a></span>,</div>
+                        <div class="code-line" style="padding-left: 20px;"><span class="property">location:</span> <span class="string">"Singapore"</span></div>
+                        <div class="code-line">});</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <div class="section reveal reveal-delay-2">
+            <div class="section-title">About</div>
+            <p class="describe">
+                Passionate full-stack developer with 5+ years of experience creating scalable web applications and solving complex technical challenges. Specialized in modern JavaScript frameworks and cloud technologies.
+            </p>
+            <div class="skills-container">
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">TypeScript</span>
+                <span class="skill-tag">React</span>
+                <span class="skill-tag">Node.js</span>
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">PostgreSQL</span>
+            </div>
+        </div>
+
+        <!-- Services Section -->
+        <div class="section reveal reveal-delay-3">
+            <div class="section-title">Services</div>
+            
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="wmp-icon-container">
+                        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="3" width="16" height="11" rx="1.5" stroke="#1e293b" stroke-width="1.5"/>
+                            <path d="M6 14L5 18H15L14 14" stroke="#1e293b" stroke-width="1.5" stroke-linejoin="round"/>
+                            <path d="M8 21H12" stroke="#1e293b" stroke-width="1.5" stroke-linecap="round"/>
+                            <rect x="15" y="10" width="6" height="11" rx="1" fill="white" stroke="#3b82f6" stroke-width="1.5"/>
+                            <path d="M6 7L4.5 8.5L6 10" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M10 7L11.5 8.5L10 10" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="18" cy="19" r="0.5" fill="#3b82f6"/>
+                            <line x1="17" y1="12" x2="19" y2="12" stroke="#e2e8f0" stroke-width="1" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="project-title">Web and Mobile Development</div>
+                        <div class="project-subtitle">Custom web applications using modern frameworks</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="sysarch-icon-container">
+                        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="6" height="6" rx="1" stroke="#1e293b" stroke-width="1.5"/>
+                            <path d="M12 4V9" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M12 15V20" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M4 12H9" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M15 12H20" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+                            <rect x="10" y="2" width="4" height="2" rx="0.5" fill="#3b82f6"/>
+                            <rect x="10" y="20" width="4" height="2" rx="0.5" fill="#3b82f6"/>
+                            <rect x="2" y="10" width="2" height="4" rx="0.5" fill="#3b82f6"/>
+                            <rect x="20" y="10" width="2" height="4" rx="0.5" fill="#3b82f6"/>
+                            <path d="M17 17L15 15" stroke="#cbd5e1" stroke-width="1.2" stroke-linecap="round"/>
+                            <path d="M7 7L9 9" stroke="#cbd5e1" stroke-width="1.2" stroke-linecap="round"/>
+                            <path d="M17 7L15 9" stroke="#cbd5e1" stroke-width="1.2" stroke-linecap="round"/>
+                            <path d="M7 17L9 15" stroke="#cbd5e1" stroke-width="1.2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="project-title">System Architecture</div>
+                        <div class="project-subtitle">Design and build scalable backend systems</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="consult-icon-container">
+                        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="4" width="20" height="14" rx="2" stroke="#1e293b" stroke-width="1.5"/>
+                            <path d="M7 14L10 11L8 9" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M17 14L14 11L16 9" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M10 11C10 11 11 10 12 10C13 10 14 11 14 11L12 13L10 11Z" fill="#3b82f6"/>
+                            <circle cx="18" cy="6" r="3" fill="white" stroke="#94a3b8" stroke-width="1"/>
+                            <path d="M17.5 5.5L18.5 6.5M18.5 5.5L17.5 6.5" stroke="#94a3b8" stroke-width="0.8" stroke-linecap="round"/>
+                            <path d="M6 18H18" stroke="#1e293b" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M9 21H15" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M12 4V2" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="project-title">Consulting</div>
+                        <div class="project-subtitle">Code reviews, strategy, and team mentoring</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Code Projects Section -->
+        <div class="section reveal reveal-delay-4">
+            <div class="section-title">Recent Projects</div>
+            
+            <div class="code-block">
+                <div class="code-block-with-lines">
+                    <div class="line-numbers">
+                        <div class="line-number">1</div>
+                        <div class="line-number">2</div>
+                        <div class="line-number">3</div>
+                        <div class="line-number">4</div>
+                        <div class="line-number">5</div>
+                        <div class="line-number">6</div>
+                        <div class="line-number">7</div>
+                        <div class="line-number">8</div>
+                        <div class="line-number">9</div>
+                        <div class="line-number">10</div>
+                        <div class="line-number">11</div>
+                        <div class="line-number">12</div>
+                        <div class="line-number">13</div>
+                        <div class="line-number">14</div>
+                        <div class="line-number">15</div>
+                        <div class="line-number">16</div>
+                    </div>
+                    <div class="code-content">
+                        <div class="code-line"><span class="keyword">const</span> <span class="function">projects</span> = [</div>
+                        <div class="code-line" style="padding-left: 20px;">{</div>
+                        <div class="code-line" style="padding-left: 40px;"><span class="property">title:</span> <span class="string">"Building a React E-commerce App"</span>,</div>
+                        <div class="code-line" style="padding-left: 40px;"><span class="property">description:</span> <span class="string">"Complete shopping cart & payment integration"</span>,</div>
+                        <div class="code-line" style="padding-left: 40px;"><span class="property">status:</span> <span class="string">"Completed"</span></div>
+                        <div class="code-line" style="padding-left: 20px;">},</div>
+                        <div class="code-line" style="padding-left: 20px;">{</div>
+                        <div class="code-line" style="padding-left: 40px;"><span class="property">title:</span> <span class="string">"Advanced TypeScript Patterns"</span>,</div>
+                        <div class="code-line" style="padding-left: 40px;"><span class="property">description:</span> <span class="string">"Design patterns for better code architecture"</span>,</div>
+                        <div class="code-line" style="padding-left: 40px;"><span class="property">status:</span> <span class="string">"In progress"</span></div>
+                        <div class="code-line" style="padding-left: 20px;">},</div>
+                        <div class="code-line" style="padding-left: 20px;">{</div>
+                        <div class="code-line" style="padding-left: 40px;"><span class="property">title:</span> <span class="string">"Client Success Story - SaaS Startup"</span>,</div>
+                        <div class="code-line" style="padding-left: 40px;"><span class="property">description:</span> <span class="string">"Built a scalable multi-tenant platform"</span>,</div>
+                        <div class="code-line" style="padding-left: 40px;"><span class="property">team:</span> <span class="string">"In progress"</span></div>
+                        <div class="code-line" style="padding-left: 20px;">}</div>
+                        <div class="code-line">];</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="section reveal">
+            <div class="section-title">Contact Options</div>
+            
+            <div class="code-block">
+                <div class="code-block-with-lines">
+                    <div class="line-numbers">
+                        <div class="line-number">1</div>
+                        <div class="line-number">2</div>
+                        <div class="line-number">3</div>
+                        <div class="line-number">4</div>
+                        <div class="line-number">5</div>
+                        <div class="line-number">6</div>
+                    </div>
+                    <div class="code-content">
+                        <div class="code-line"><span class="keyword">const</span> <span class="function">contact</span> = () => {</div>
+                        <div class="code-line" style="padding-left: 20px;"><span class="keyword">return</span> {</div>
+                        <div class="code-line" style="padding-left: 40px;"><span class="property">channels:</span> [<span class="string">"email"</span>, <span class="string">"phone"</span>]</div>
+                        <div class="code-line" style="padding-left: 40px;"><span class="property">response_time:</span> <span class="string">"< 24 hours"</span></div>
+                        <div class="code-line" style="padding-left: 20px;">};</div>
+                        <div class="code-line">};</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="section reveal reveal-delay-1">
+            <div class="section-title">Let's Work Together</div>
+            <p class="describe">
+                Have a project in mind? Let's discuss how I can help you build something amazing. Whether it's a new application, system architecture, or code review, I'm here to help.
+            </p>
+
+            <input type="text" id="nameInput" class="input-field" placeholder="Your Name" required>
+            <div id="nameError" class="error-message"></div>
+            
+            <input type="text" id="emailInput" class="input-field" placeholder="Email Address" required>
+            <div id="emailError" class="error-message"></div>
+
+            <button class="btn btn-primary" onclick="sendToWhatsApp()">Get in touch →</button>
+            <p class="para-sendemail">
+                or send an email to <span style="color: var(--accent-blue); font-weight: bold;">ernestkhor@gmail.com</span>
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer reveal">
+            © 2016 Ernest Khor. All rights reserved.
+        </div>
+    </div>
+
+    <script>
+        // ===== SCROLL PROGRESS BAR =====
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPercentage = (scrollTop / scrollHeight) * 100;
+            document.getElementById('scrollProgress').style.width = scrollPercentage + '%';
+        });
+
+        // ===== THEME TOGGLE =====
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        if (currentTheme === 'light') {
+            document.body.classList.add('light-mode');
+            document.getElementById('themeToggle').textContent = '☀️';
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            
+            body.classList.toggle('light-mode');
+            
+            if (body.classList.contains('light-mode')) {
+                themeToggle.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+                showToast('Light mode enabled!', 'info');
+            } else {
+                themeToggle.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+                showToast('Dark mode enabled!', 'info');
+            }
+        }
+
+        // ===== REVEAL ANIMATIONS =====
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // ===== TOAST NOTIFICATIONS =====
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            let icon = 'ℹ️';
+            if (type === 'success') icon = '✅';
+            if (type === 'error') icon = '❌';
+            if (type === 'info') icon = 'ℹ️';
+            
+            toast.innerHTML = `<span class="toast-icon">${icon}</span><span>${message}</span>`;
+            container.appendChild(toast);
+            
+            // Trigger animation
+            setTimeout(() => toast.classList.add('show'), 10);
+            
+            // Remove after delay
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        }
+
+        // ===== INLINE FORM VALIDATION =====
+        function showError(inputId, message) {
+            const input = document.getElementById(inputId);
+            const errorDiv = document.getElementById(inputId === 'nameInput' ? 'nameError' : 'emailError');
+            
+            input.classList.add('error');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+        }
+
+        function clearErrors() {
+            const inputs = document.querySelectorAll('.input-field');
+            inputs.forEach(input => input.classList.remove('error'));
+            
+            const errors = document.querySelectorAll('.error-message');
+            errors.forEach(error => {
+                error.textContent = '';
+                error.classList.remove('show');
+            });
+        }
+
+        // ===== SEND TO WHATSAPP =====
+        function sendToWhatsApp() {
+            const nameInput = document.getElementById('nameInput');
+            const emailInput = document.getElementById('emailInput');
+
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+
+            // Clear previous errors
+            clearErrors();
+            let hasError = false;
+
+            // Validate name
+            if (name === '') {
+                showError('nameInput', 'Please enter your name');
+                hasError = true;
+            } else if (!isValidName(name)) {
+                showError('nameInput', 'Please enter a valid name (letters only)');
+                hasError = true;
+            }
+
+            // Validate email
+            if (email === '') {
+                showError('emailInput', 'Please enter your email address');
+                hasError = true;
+            } else if (!isValidEmail(email)) {
+                showError('emailInput', 'Please enter a valid email address');
+                hasError = true;
+            }
+
+            if (hasError) {
+                showToast('Please fix the errors below', 'error');
+                return;
+            }
+
+            // Success - show toast and open WhatsApp
+            showToast('Opening WhatsApp...', 'success');
+
+            const message = encodeURIComponent(
+                `Name: ${name}\n` +
+                `Email: ${email}\n\n` +
+                `Hello Ernest,\n\n` +
+                `I'm interested in your services.\n\n` +
+                `Let's discuss a project opportunity!\n`
+            );
+            
+            const whatsappURL = `https://wa.me/92346928?text=${message}`;
+            window.open(whatsappURL, '_blank');
+        }
+
+        // Email validation
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Name validation
+        function isValidName(name) {
+            const nameRegex = /^[a-zA-Z\s'-]+$/;
+            return nameRegex.test(name);
+        }
+
+        // Add input event listeners to clear errors on type
+        document.getElementById('nameInput').addEventListener('input', function() {
+            this.classList.remove('error');
+            document.getElementById('nameError').classList.remove('show');
+        });
+
+        document.getElementById('emailInput').addEventListener('input', function() {
+            this.classList.remove('error');
+            document.getElementById('emailError').classList.remove('show');
+        });
+    </script>
+</body>
+</html>
